@@ -15,6 +15,7 @@ const styles = (theme) => ({
   // },
   card: {
     width: 300,
+    postion: 'center'
   },
   pos: {
     marginBottom: 12,
