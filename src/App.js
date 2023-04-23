@@ -71,7 +71,7 @@ const App = (props) => {
 
   const updateWaist = () => {
     axios
-    .post('http://chaithanyamedasani.pythonanywhere.com/api/update-waist', {
+    .post('https://chaithanyamedasani.pythonanywhere.com/api/update-waist', {
       height: height,
       age: age,
       weight: weight,
@@ -90,7 +90,7 @@ const App = (props) => {
   const fetchWaist = () => {
     setDiablefetch(true)
     axios
-    .post('http://chaithanyamedasani.pythonanywhere.com/api/fetch-waist', {
+    .post('https://chaithanyamedasani.pythonanywhere.com/api/fetch-waist', {
       height: height,
       age: age,
       weight: weight,
