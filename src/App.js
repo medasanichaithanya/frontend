@@ -7,6 +7,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+import Typography  from '@mui/material/Typography';
 import './App.css';
 
 
@@ -91,7 +92,7 @@ const App = (props) => {
         <Grid >
             <Card  style={{maxWidth: '500px',width: '100%',marginTop: '5rem' ,marginLeft:'25rem' }}>
               <CardContent>
-                <h5>WAIST FETCHER</h5>
+                <Typography>WAIST FETCHER</Typography>
                 <form  noValidate autoComplete='off' style={{ paddingLeft: '10px' }}>
                   <FormControl style={{width:'100%', marginBottom:'8px'}}>
                     <InputLabel>Height</InputLabel>
@@ -126,10 +127,10 @@ const App = (props) => {
                     </Button>
                   </div>
                 </form>
-                {waist ?(<div><h4>waist measurements range from the data is {waist}</h4></div>):
+                {waist ?(<div><Typography>waist measurements range from the data is {waist}</Typography></div>):
                 found ? (
                         <div>
-                         <h5>The match waist Not Found in the Database.Please Enter waist to Update</h5>
+                         <Typography>The match waist Not Found in the Database.Please Enter waist to Update</Typography>
                          <FormControl style={{width:'100%', marginBottom:'8px'}}>
                           <InputLabel>Waist</InputLabel>
                           <Input
@@ -144,7 +145,7 @@ const App = (props) => {
                             Submit
                           </Button>
                         </div>
-                        {submitmsg ? (<h4>{submitmsg}</h4>):null}
+                        {submitmsg ? (<Typography>{submitmsg}</Typography>):null}
                         </div>
                         ):null}
               </CardContent>
