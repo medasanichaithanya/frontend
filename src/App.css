@@ -1,16 +1,19 @@
 
-body {
-  background: url("https://www.ecotravelschristchurch.co.nz/wp-content/uploads/2022/01/bg-1.jpg")
-}
-h4 {
-  color:green;
+.main-container {
+  background-image: url("https://www.ecotravelschristchurch.co.nz/wp-content/uploads/2022/01/bg-1.jpg");
+  height: 100vh;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
-.button {
-  text-align: center;
+.inside-container{
+  background-color: white;
+  border-radius: 20px;
+  padding:30px;
+  width: 40vh;
+  margin:auto;
 }
-h5 {
-  text-align: center;
-  font-size: 1.3rem;
-  margin-top: 0;
-}
+
+
+

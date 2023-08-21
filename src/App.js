@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Input from '@mui/material/Input';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
+
+import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
 import './App.css';
+import { Typography } from '@mui/material';
 
 
 const App = (props) => {
@@ -20,13 +17,24 @@ const App = (props) => {
   const [submitmsg, setSubmitmsg] = useState(false);
   const [disablesubmit, setDisablesubmit] = useState(false);
   const [disablefetch, setDiablefetch] = useState(false);
+  const [baseurl,setBaseUrl] = useState('');
 
   const handleHeightChange = (e) => {
     setHeight(e.target.value);
+    setDisablesubmit(false)
     setDiablefetch(false)
     setWaist('')
     setFound(false)
   };
+
+  useEffect(()=>{
+    const currentUrl = window.location.href;
+    if (currentUrl.includes('https://')) {
+        setBaseUrl('https://chaithanyamedasani.pythonanywhere.com/');
+      } else {
+        setBaseUrl('http://localhost:8000');
+      }
+})
 
   const handleAgeChange = (e) => {
     setAge(e.target.value);
@@ -48,7 +56,7 @@ const App = (props) => {
 
   const updateWaist = () => {
     axios
-    .post('https://chaithanyamedasani.pythonanywhere.com/api/update-waist', {
+    .post(baseurl+'/api/update-waist', {
       height: height,
       age: age,
       weight: weight,
@@ -65,8 +73,11 @@ const App = (props) => {
 
   const fetchWaist = () => {
     setDiablefetch(true)
+    setDisablesubmit(false)
+    setGivenwaist('')
+    setSubmitmsg('')
     axios
-    .post('https://chaithanyamedasani.pythonanywhere.com/api/fetch-waist', {
+    .post(baseurl+'/api/fetch-waist', {
       height: height,
       age: age,
       weight: weight,
@@ -76,6 +87,7 @@ const App = (props) => {
       if (data.Status === 'SUCCESS')
       {
         setWaist(data.Waist)
+        console.log(data.Waist)
       }
       else{
         setFound(true)
@@ -86,71 +98,60 @@ const App = (props) => {
  
   
   return (
-    <div>
-      <Grid item xs={12}>
-        <Grid >
-            <Card  style={{maxWidth: '500px',width: '100%',marginTop: '5rem' ,marginLeft:'25rem' }}>
-              <CardContent>
-                <h5>WAIST FETCHER</h5>
-                <form  noValidate autoComplete='off' style={{ paddingLeft: '10px' }}>
-                  <FormControl style={{width:'100%', marginBottom:'8px'}}>
-                    <InputLabel>Height</InputLabel>
-                    <Input
-                       id='Height'
-                       value={height}
-                       onChange={handleHeightChange}
-                       margin='normal'
-                    />
-                  </FormControl>
-                  <FormControl style={{width:'100%', marginBottom:'8px'}}>
-                    <InputLabel>Age</InputLabel>
-                    <Input
-                      id='Age'
-                      value={age}
-                      onChange={handleAgeChange}
-                      margin='normal'
-                    />
-                  </FormControl>
-                  <FormControl style={{width:'100%', marginBottom:'8px'}}>
-                    <InputLabel>Weight</InputLabel>
-                    <Input
-                      id='Weight'
-                      value={weight}
-                      onChange={handleWeightChange}
-                      margin='normal'
-                    />
-                  </FormControl>
-                  <div className='button'>
-                    <Button size='large' variant='contained' color='primary' onClick={fetchWaist} disabled={disablefetch}>
-                      Fetch
-                    </Button>
-                  </div>
-                </form>
-                {waist ?(<div><h4>waist measurements range from the data is {waist}</h4></div>):
-                found ? (
-                        <div>
-                         <h4>The match waist Not Found in the Database.Please Enter waist to Update</h4>
-                         <FormControl style={{width:'100%', marginBottom:'8px'}}>
-                          <InputLabel>Waist</InputLabel>
-                          <Input
-                            id='Waist'
-                            value={givenwaist}
-                            onChange={handleWaistChange}
-                            margin='normal'
-                          />
-                        </FormControl>
-                        <div className='button'>
-                          <Button size='large' variant='contained' color='primary' onClick={updateWaist} disabled={disablesubmit}>
-                            Submit
-                          </Button>
-                        </div>
-                        {submitmsg ? (<h4>{submitmsg}</h4>):null}
-                        </div>
-                        ):null}
-              </CardContent>
-            </Card>
-        </Grid>
-      </Grid>
+    <div className='main-container'>
+        <div className='inside-container'>
+           <h3>Waist Fetcher</h3>
+            
+           <TextField 
+              id="height" 
+              label="Height"
+              variant="standard" 
+              value={height}  
+              onChange={handleHeightChange} 
+              required 
+              className='mt-3'
+            />
+           <TextField 
+              id="age" 
+              label="Age"
+              variant="standard" 
+              value={age} 
+              required 
+              onChange={handleAgeChange}
+              className='mt-3'
+            />
+           <TextField 
+              id="weight" 
+              label="Weight" 
+              value={weight}  
+              onChange={handleWeightChange}
+              required
+              variant="standard"
+              className='mt-3'
+            />
+           <br />
+           <Button variant="contained" onClick={fetchWaist} disabled={disablefetch} className='mt-3'>FETCH</Button>
+           {waist ? (<Typography className='mt-3 text-secondary'>The waist is {waist} </Typography>):null}
+           {found ? (
+           <div className='mt-2'>
+            <h6>Waist Not Found Would you like to update?</h6>
+            <TextField 
+              id="givenwaist" 
+              label="Give Your Waist" 
+              value={givenwaist}  
+              onChange={handleWaistChange}
+              disabled={disablesubmit}
+              required
+              variant="standard"
+            />
+             <Button variant="contained" onClick={updateWaist} disabled={disablesubmit} className='mt-3'>SUBMIT</Button>
+             {submitmsg ? (<Typography className='text-success'>{submitmsg}</Typography>):null}
+            </div>
+            ):null}
+           
+        </div>
+        
+   
     </div>
   );
 };
